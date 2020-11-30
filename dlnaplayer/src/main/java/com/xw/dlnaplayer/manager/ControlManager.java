@@ -1,7 +1,9 @@
 package com.xw.dlnaplayer.manager;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.xw.dlnaplayer.PlayControlle;
 import com.xw.dlnaplayer.VError;
 import com.xw.dlnaplayer.callback.AVTransportCallback;
 import com.xw.dlnaplayer.callback.ControlCallback;
@@ -378,9 +380,10 @@ public class ControlManager {
         avtCallback = new AVTransportCallback(avtService) {
             @Override
             protected void received(AVTransportInfo info) {
-                ControlEvent event = new ControlEvent();
-                event.setAvtInfo(info);
-                EventBus.getDefault().post(event);
+                AVTransport(info);
+//                ControlEvent event = new ControlEvent();
+//                event.setAvtInfo(info);
+//                EventBus.getDefault().post(event);
             }
         };
         ClingManager.getInstance().getControlPoint().execute(avtCallback);
@@ -391,9 +394,9 @@ public class ControlManager {
             protected void received(RenderingControlInfo info) {
                 Log.d("info","RenderingControlCallback received: mute:%b, volume:%d"+info.isMute()+"   volume  "+info
                         .getVolume());
-                ControlEvent event = new ControlEvent();
-                event.setRcInfo(info);
-                EventBus.getDefault().post(event);
+//                ControlEvent event = new ControlEvent();
+//                event.setRcInfo(info);
+//                EventBus.getDefault().post(event);
             }
         };
         ClingManager.getInstance().getControlPoint().execute(rcCallback);
@@ -430,9 +433,10 @@ public class ControlManager {
 //                    info.setTimePosition(positionInfo.getAbsTime());
                     info.setTimePosition(positionInfo.getRelTime());
                     info.setMediaDuration(positionInfo.getTrackDuration());
-                    ControlEvent event = new ControlEvent();
-                    event.setAvtInfo(info);
-                    EventBus.getDefault().post(event);
+//                    ControlEvent event = new ControlEvent();
+//                    event.setAvtInfo(info);
+//                    EventBus.getDefault().post(event);
+                    AVTransport(info);
 
                     absTimeStr = positionInfo.getAbsTime();
                     absTime = VMDate.fromTimeString(absTimeStr);
@@ -483,9 +487,10 @@ public class ControlManager {
                         unInitScreenCastCallback();
                     }
                 }
-                ControlEvent event = new ControlEvent();
-                event.setAvtInfo(info);
-                EventBus.getDefault().post(event);
+//                ControlEvent event = new ControlEvent();
+//                event.setAvtInfo(info);
+//                EventBus.getDefault().post(event);
+                AVTransport(info);
                 Log.d("info","getTransportInfo success transportInfo:" + ts.getValue());
             }
 
@@ -510,9 +515,9 @@ public class ControlManager {
                 RenderingControlInfo info = new RenderingControlInfo();
                 info.setVolume(currentVolume);
                 info.setMute(false);
-                ControlEvent event = new ControlEvent();
-                event.setRcInfo(info);
-                EventBus.getDefault().post(event);
+//                ControlEvent event = new ControlEvent();
+//                event.setRcInfo(info);
+//                EventBus.getDefault().post(event);
                 Log.d("success volume:" , String.valueOf(currentVolume));
             }
 
@@ -589,4 +594,30 @@ public class ControlManager {
         STOPED
     }
 
+    /**
+     * 控制播放 ，暂停
+     * @param avtInfo
+     */
+    private void AVTransport(AVTransportInfo avtInfo){
+        if (avtInfo != null) {
+
+            if (!TextUtils.isEmpty(avtInfo.getState())) {
+                if (avtInfo.getState().equals("TRANSITIONING")) {
+                    PlayControlle.getInstance().transitioning();
+                } else if (avtInfo.getState().equals("PLAYING")) {
+                    PlayControlle.getInstance().playing();
+                } else if (avtInfo.getState().equals("PAUSED_PLAYBACK")) {
+                    PlayControlle.getInstance().pause();
+                } else if (avtInfo.getState().equals("STOPPED")) {
+                    PlayControlle.getInstance().stops();
+                } else {
+                    PlayControlle.getInstance().stops();
+                }
+            }
+
+            PlayControlle.getInstance().setMediaDuration(avtInfo.getMediaDuration());
+            PlayControlle.getInstance().setTimePosition(avtInfo.getTimePosition());
+
+        }
+    }
 }

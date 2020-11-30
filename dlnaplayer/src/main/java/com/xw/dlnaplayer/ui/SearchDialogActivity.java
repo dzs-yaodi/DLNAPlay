@@ -1,5 +1,6 @@
 package com.xw.dlnaplayer.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class SearchDialogActivity extends AppCompatActivity {
 
     private DeviceAdapter deviceAdapter;
     private ListView listView;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +37,17 @@ public class SearchDialogActivity extends AppCompatActivity {
         deviceAdapter = new DeviceAdapter(this);
         listView.setAdapter(deviceAdapter);
 
+        position = getIntent().getIntExtra("index",0);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ClingDevice device =  deviceAdapter.getClingDevices().get(i);
                 DeviceManager.getInstance().setCurrClingDevice(device);
 
-                EventBus.getDefault().post("init");
+                Intent intent = new Intent();
+                intent.putExtra("index",position);
+                setResult(101,intent);
                 finish();
             }
         });

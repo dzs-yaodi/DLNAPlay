@@ -26,6 +26,7 @@ public class PlayControlle implements View.OnClickListener {
     private TextView tvTotalTime;
     private SeekBar seekBar;
     private Context mContext;
+    private View parentView;
 
     private int currProgress = 0;
     private Item localItem;
@@ -47,6 +48,7 @@ public class PlayControlle implements View.OnClickListener {
     public void init(View view, Context context){
 
         this.mContext = context;
+        this.parentView = view;
         imagePlay = view.findViewById(R.id.image_play);
         imageClose = view.findViewById(R.id.image_close);
         tvCurrentTime = view.findViewById(R.id.current);
@@ -55,6 +57,13 @@ public class PlayControlle implements View.OnClickListener {
 
         localItem = ClingManager.getInstance().getLocalItem();
         remoteItem = ClingManager.getInstance().getRemoteItem();
+
+        imageClose.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                parentView.setVisibility(View.VISIBLE);
+            }
+        },1000);
 
         imagePlay.setOnClickListener(this);
         imageClose.setOnClickListener(this);
@@ -75,6 +84,12 @@ public class PlayControlle implements View.OnClickListener {
                 seekCast(currProgress);
             }
         });
+    }
+
+    public void destroy(){
+        if (instance != null){
+            instance = null;
+        }
     }
 
     /**
@@ -229,7 +244,8 @@ public class PlayControlle implements View.OnClickListener {
             public void onSuccess() {
                 ControlManager.getInstance().setState(ControlManager.CastState.STOPED);
                 changePlayState(false);
-                EventBus.getDefault().post("close");
+//                EventBus.getDefault().post("close");
+                parentView.setVisibility(View.GONE);
             }
 
             @Override
