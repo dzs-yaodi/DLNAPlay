@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.xw.dlnaplayer.PlayControlle;
 import com.xw.dlnaplayer.entity.RemoteItem;
+import com.xw.dlnaplayer.listener.ControlListener;
 import com.xw.dlnaplayer.manager.ClingManager;
 import com.xw.dlnaplayer.ui.SearchDialogActivity;
 
@@ -35,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,100);
             }
         });
-
     }
 
     @Override
@@ -53,7 +54,13 @@ public class MainActivity extends AppCompatActivity {
                     RemoteItem itemurl1 = new RemoteItem("一路之下", "425703", "张杰",
                             107362668, "00:04:33", "1280x720", url1);
                     ClingManager.getInstance().setRemoteItem(itemurl1);
-                    PlayControlle.getInstance().init(frameLayout,MainActivity.this);
+                    PlayControlle.getInstance().init(frameLayout, MainActivity.this);
+                    PlayControlle.getInstance().setCloseListener(new ControlListener() {
+                        @Override
+                        public void getDlnaPlayPosition(long progress) {
+                            Toast.makeText(MainActivity.this, "播放进度" + progress, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             },500);
         }

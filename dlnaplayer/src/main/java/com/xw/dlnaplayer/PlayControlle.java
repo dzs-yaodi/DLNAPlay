@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.xw.dlnaplayer.callback.ControlCallback;
 import com.xw.dlnaplayer.entity.RemoteItem;
+import com.xw.dlnaplayer.listener.ControlListener;
 import com.xw.dlnaplayer.manager.ClingManager;
 import com.xw.dlnaplayer.manager.ControlManager;
 import com.xw.dlnaplayer.utils.VMDate;
@@ -17,7 +18,7 @@ import com.xw.dlnaplayer.utils.VMDate;
 import org.fourthline.cling.support.model.item.Item;
 import org.greenrobot.eventbus.EventBus;
 
-public class PlayControlle implements View.OnClickListener {
+public class PlayControlle{
 
     private static PlayControlle instance = null;
     private ImageView imagePlay;
@@ -59,8 +60,12 @@ public class PlayControlle implements View.OnClickListener {
         remoteItem = ClingManager.getInstance().getRemoteItem();
         parentView.setVisibility(View.VISIBLE);
 
-        imagePlay.setOnClickListener(this);
-        imageClose.setOnClickListener(this);
+        imagePlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                play();
+            }
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -76,6 +81,23 @@ public class PlayControlle implements View.OnClickListener {
                 currProgress = seekBar.getProgress();
                 tvCurrentTime.setText(VMDate.toTimeString(currProgress));
                 seekCast(currProgress);
+            }
+        });
+    }
+
+    /**
+     * 设置关闭按钮点击事件，并返回播放进度
+     * @param controlListener
+     */
+    public void setCloseListener(final ControlListener controlListener){
+        imageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = tvCurrentTime.getText().toString();
+                long progress = VMDate.fromTimeString(text);
+                controlListener.getDlnaPlayPosition(progress);
+                stop();
+                parentView.setVisibility(View.GONE);
             }
         });
     }
@@ -129,18 +151,6 @@ public class PlayControlle implements View.OnClickListener {
 
     private void showToast(final String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        int id = view.getId();
-        if (id == R.id.image_play){
-            play();
-        }else if (id == R.id.image_close){
-            stop();
-            parentView.setVisibility(View.GONE);
-        }
     }
 
     /**
