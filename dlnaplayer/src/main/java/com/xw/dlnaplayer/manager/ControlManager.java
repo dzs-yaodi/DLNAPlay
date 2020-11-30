@@ -82,6 +82,14 @@ public class ControlManager {
     }
 
     /**
+     * 获取投屏状态
+     * @return
+     */
+    public boolean isScreenCast() {
+        return isScreenCast;
+    }
+
+    /**
      * 开始新的投屏播放，需要先停止上一次的投屏
      *
      * @param item 需要投屏播放的本地资源对象
@@ -148,6 +156,10 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new Play(instanceId, avtService) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -172,6 +184,10 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new Pause(instanceId, avtService) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -196,6 +212,10 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new Stop(instanceId, avtService) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -222,6 +242,10 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new Seek(instanceId, avtService, target) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -247,6 +271,10 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new SetVolume(instanceId, rcService, volume) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -271,6 +299,10 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new SetMute(instanceId, rcService, mute) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -307,6 +339,10 @@ public class ControlManager {
         }
         Log.d("metadata: %s", metadata);
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new SetAVTransportURI(instanceId, avtService, uri, metadata) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -334,6 +370,10 @@ public class ControlManager {
         Log.i("metadata: " , metadata);
         final String uri = item.getUrl();
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            callback.onError(VError.SERVICE_IS_NULL, "ClingService is null");
+            return;
+        }
         controlPoint.execute(new SetAVTransportURI(instanceId, avtService, item.getUrl(), metadata) {
             @Override
             public void success(ActionInvocation invocation) {
@@ -425,6 +465,9 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            return;
+        }
         controlPoint.execute(new GetPositionInfo(instanceId, avtService) {
             @Override
             public void received(ActionInvocation invocation, PositionInfo positionInfo) {
@@ -464,6 +507,9 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            return;
+        }
         controlPoint.execute(new GetTransportInfo(instanceId, avtService) {
 
             @Override
@@ -509,6 +555,9 @@ public class ControlManager {
             return;
         }
         ControlPoint controlPoint = ClingManager.getInstance().getControlPoint();
+        if (controlPoint == null){
+            return;
+        }
         controlPoint.execute(new GetVolume(instanceId, rcService) {
             @Override
             public void received(ActionInvocation actionInvocation, int currentVolume) {

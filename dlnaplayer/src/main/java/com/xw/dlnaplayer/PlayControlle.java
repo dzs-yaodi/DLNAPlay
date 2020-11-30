@@ -88,6 +88,7 @@ public class PlayControlle implements View.OnClickListener {
 
     public void destroy(){
         if (instance != null){
+            stopCast();
             instance = null;
         }
     }
@@ -166,6 +167,9 @@ public class PlayControlle implements View.OnClickListener {
         }
     }
 
+    /**
+     * 关闭投屏
+     */
     private void stop() {
         ControlManager.getInstance().unInitScreenCastCallback();
         stopCast();

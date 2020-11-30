@@ -73,7 +73,10 @@ public class ClingManager {
      * 获取控制点
      */
     public ControlPoint getControlPoint() {
-        return clingService.getControlPoint();
+        if (clingService != null) {
+            return clingService.getControlPoint();
+        }
+        return null;
     }
 
     /**

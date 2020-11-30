@@ -92,7 +92,11 @@ public class ClingService extends AndroidUpnpServiceImpl {
      * 获取控制点
      */
     public ControlPoint getControlPoint() {
-        return upnpService.getControlPoint();
+        if (upnpService == null){
+            return null;
+        }else {
+            return upnpService.getControlPoint();
+        }
     }
 
     /**
