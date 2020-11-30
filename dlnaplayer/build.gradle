@@ -37,5 +37,5 @@ dependencies {
     api 'org.eclipse.jetty:jetty-client:8.1.21.v20160908'
 
     // 自己封装的工具库
-    implementation 'org.greenrobot:eventbus:3.0.0'
+    compileOnly 'org.greenrobot:eventbus:3.0.0'
 }
