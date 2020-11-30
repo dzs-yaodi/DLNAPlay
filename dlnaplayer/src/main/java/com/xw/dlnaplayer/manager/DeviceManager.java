@@ -1,6 +1,8 @@
 package com.xw.dlnaplayer.manager;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.xw.dlnaplayer.entity.ClingDevice;
 import com.xw.dlnaplayer.event.DeviceEvent;
@@ -64,9 +66,29 @@ public class DeviceManager {
      */
     public void addDevice(@NonNull Device device) {
         if (device.getType().equals(DMR_DEVICE)) {
-            ClingDevice clingDevice = new ClingDevice(device);
-            clingDeviceList.add(clingDevice);
-            EventBus.getDefault().post(new DeviceEvent());
+            String udn = "";
+            int listSize = 0;
+            if (device.getIdentity() != null) {
+                udn = device.getIdentity().getUdn().toString();
+            }
+
+            for (int i = 0; i < clingDeviceList.size(); i++) {
+                Device device1 = clingDeviceList.get(i).getDevice();
+                String udn1 = "";
+                if (device1.getIdentity() != null) {
+                    udn1 = device1.getIdentity().getUdn().toString();
+                }
+                if (TextUtils.equals(udn,udn1)){
+                    break;
+                }
+                listSize++;
+            }
+
+            if (listSize == clingDeviceList.size()) {
+                ClingDevice clingDevice = new ClingDevice(device);
+                clingDeviceList.add(clingDevice);
+                EventBus.getDefault().post(new DeviceEvent());
+            }
         }
     }
 

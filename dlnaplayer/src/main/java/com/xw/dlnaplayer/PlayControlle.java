@@ -57,13 +57,7 @@ public class PlayControlle implements View.OnClickListener {
 
         localItem = ClingManager.getInstance().getLocalItem();
         remoteItem = ClingManager.getInstance().getRemoteItem();
-
-        imageClose.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                parentView.setVisibility(View.VISIBLE);
-            }
-        },1000);
+        parentView.setVisibility(View.VISIBLE);
 
         imagePlay.setOnClickListener(this);
         imageClose.setOnClickListener(this);
@@ -145,6 +139,7 @@ public class PlayControlle implements View.OnClickListener {
             play();
         }else if (id == R.id.image_close){
             stop();
+            parentView.setVisibility(View.GONE);
         }
     }
 
@@ -249,7 +244,6 @@ public class PlayControlle implements View.OnClickListener {
                 ControlManager.getInstance().setState(ControlManager.CastState.STOPED);
                 changePlayState(false);
 //                EventBus.getDefault().post("close");
-                parentView.setVisibility(View.GONE);
             }
 
             @Override
