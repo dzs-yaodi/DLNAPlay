@@ -22,6 +22,7 @@ public class SearchDialogActivity extends AppCompatActivity {
     private DeviceAdapter deviceAdapter;
     private ListView listView;
     private int position;
+    private String videoUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +34,26 @@ public class SearchDialogActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        EventBus.getDefault().register(this);
         listView = findViewById(R.id.listView);
         deviceAdapter = new DeviceAdapter(this);
         listView.setAdapter(deviceAdapter);
 
         position = getIntent().getIntExtra("index",0);
+        videoUrl = getIntent().getStringExtra("video_url");
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ClingDevice device =  deviceAdapter.getClingDevices().get(i);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ClingDevice device =  deviceAdapter.getClingDevices().get(position);
                 DeviceManager.getInstance().setCurrClingDevice(device);
 
-                Intent intent = new Intent();
-                intent.putExtra("index",position);
-                setResult(101,intent);
+//            Intent intent = new Intent();
+//            intent.putExtra("index",position);
+//            setResult(101,intent);
+                Intent intent = new Intent(SearchDialogActivity.this,DlnaControlActivity.class);
+                intent.putExtra("video_url",videoUrl);
+                startActivity(intent);
                 finish();
             }
         });
@@ -69,14 +75,8 @@ public class SearchDialogActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

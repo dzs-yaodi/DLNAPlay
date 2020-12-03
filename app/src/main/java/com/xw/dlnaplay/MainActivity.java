@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchDialogActivity.class);
+                intent.putExtra("video_url",url1);
                 startActivityForResult(intent,100);
             }
         });
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     RemoteItem itemurl1 = new RemoteItem("一路之下", "425703", "张杰",
                             107362668, "00:04:33", "1280x720", url1);
                     ClingManager.getInstance().setRemoteItem(itemurl1);
-                    PlayControlle.getInstance().init(frameLayout, MainActivity.this);
+                    PlayControlle.getInstance().init(frameLayout, MainActivity.this,PlayControlle.VIEW_MODE);
                     PlayControlle.getInstance().setCloseListener(new ControlListener() {
                         @Override
                         public void getDlnaPlayPosition(long progress) {

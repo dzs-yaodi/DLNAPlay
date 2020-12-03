@@ -21,6 +21,13 @@ import org.greenrobot.eventbus.EventBus;
 public class PlayControlle{
 
     private static PlayControlle instance = null;
+    //控制类型
+    private int controlMode = ACTIVITY_MODE;
+
+    //activity页面控制
+    public static final int ACTIVITY_MODE = 1;
+    //布局覆盖控制
+    public static final int VIEW_MODE = 2;
     private ImageView imagePlay;
     private ImageView imageClose;
     private TextView tvCurrentTime;
@@ -46,10 +53,11 @@ public class PlayControlle{
         return instance;
     }
 
-    public void init(View view, Context context){
+    public void init(View view, Context context,int mode){
 
         this.mContext = context;
         this.parentView = view;
+        this.controlMode = mode;
         imagePlay = view.findViewById(R.id.image_play);
         imageClose = view.findViewById(R.id.image_close);
         tvCurrentTime = view.findViewById(R.id.current);
@@ -58,7 +66,9 @@ public class PlayControlle{
 
         localItem = ClingManager.getInstance().getLocalItem();
         remoteItem = ClingManager.getInstance().getRemoteItem();
-        parentView.setVisibility(View.VISIBLE);
+        if (controlMode == VIEW_MODE) {
+            parentView.setVisibility(View.VISIBLE);
+        }
 
         imagePlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +107,9 @@ public class PlayControlle{
                 long progress = VMDate.fromTimeString(text);
                 controlListener.getDlnaPlayPosition(progress);
                 stop();
-                parentView.setVisibility(View.GONE);
+                if (controlMode == VIEW_MODE) {
+                    parentView.setVisibility(View.GONE);
+                }
             }
         });
     }

@@ -21,5 +21,8 @@
 
         <activity android:name=".ui.SearchDialogActivity"
             android:theme="@style/search_dlna_style"/>
+
+        <activity android:name=".ui.DlnaControlActivity"
+            android:launchMode="singleTop"/>
     </application>
 </manifest>
