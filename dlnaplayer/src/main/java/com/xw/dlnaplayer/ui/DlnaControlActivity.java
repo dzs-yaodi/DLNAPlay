@@ -22,9 +22,8 @@ public class DlnaControlActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.setTranslucentStatus(this);
-
         setContentView(R.layout.activity_dlna_control_layout);
+        Utils.setTranslucentStatus(this);
 
         frameDlnaControl = findViewById(R.id.frame_dlna_control);
 

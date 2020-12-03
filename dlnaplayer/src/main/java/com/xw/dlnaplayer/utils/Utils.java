@@ -17,6 +17,8 @@ public class Utils {
             activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.hide();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
     }
 }
