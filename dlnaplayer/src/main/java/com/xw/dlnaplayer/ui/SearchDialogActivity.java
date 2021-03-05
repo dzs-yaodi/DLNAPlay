@@ -1,14 +1,14 @@
 package com.xw.dlnaplayer.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.xw.dlnaplayer.R;
 import com.xw.dlnaplayer.entity.ClingDevice;
@@ -39,6 +39,9 @@ public class SearchDialogActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
         mRecycler = findViewById(R.id.recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(new ColorDrawable(Color.parseColor("#eeeeee")));
+        mRecycler.addItemDecoration(itemDecoration);
 
         deviceAdapter = new DeviceSelectAdapter(this);
         mRecycler.setAdapter(deviceAdapter);

@@ -41,25 +41,32 @@ public class DeviceSelectAdapter extends RecyclerView.Adapter<DeviceSelectAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SelectViewHolder holder, final int position) {
-        Device device = clingDevices.get(position).getDevice();
-        String name = device.getDetails() != null && device.getDetails().getFriendlyName() != null
-                ? device.getDetails().getFriendlyName() : device.getDisplayString();
-        holder.tvContent.setText(device.isFullyHydrated() ? name : name + " *");
+        if (clingDevices.size() > 0) {
+            if (position == clingDevices.size()){
+                holder.tvContent.setText("加载中...");
+            }else {
+                Device device = clingDevices.get(position).getDevice();
+                String name = device.getDetails() != null && device.getDetails().getFriendlyName() != null
+                        ? device.getDetails().getFriendlyName() : device.getDisplayString();
+                holder.tvContent.setText(device.isFullyHydrated() ? name : name + " *");
 
-        Log.d("info", "====position====" + position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null){
-                    onItemClickListener.onItemListener(position);
-                }
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onItemClickListener != null) {
+                            onItemClickListener.onItemListener(position);
+                        }
+                    }
+                });
             }
-        });
+        }else{
+            holder.tvContent.setText("未发现可用设备...");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return clingDevices.size();
+        return clingDevices.size() + 1;
     }
 
     class SelectViewHolder extends RecyclerView.ViewHolder{

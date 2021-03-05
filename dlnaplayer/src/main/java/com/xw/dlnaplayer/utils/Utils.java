@@ -1,5 +1,6 @@
 package com.xw.dlnaplayer.utils;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
@@ -20,5 +21,10 @@ public class Utils {
         if (actionBar != null) {
             actionBar.hide();
         }
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }
