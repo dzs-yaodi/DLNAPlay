@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import com.xw.dlnaplayer.R;
 import com.xw.dlnaplayer.entity.ClingDevice;
 import com.xw.dlnaplayer.event.DeviceEvent;
+import com.xw.dlnaplayer.manager.ClingManager;
 import com.xw.dlnaplayer.manager.DeviceManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,6 +37,7 @@ public class SearchDialogActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        ClingManager.getInstance().startClingService();
         EventBus.getDefault().register(this);
         mRecycler = findViewById(R.id.recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));

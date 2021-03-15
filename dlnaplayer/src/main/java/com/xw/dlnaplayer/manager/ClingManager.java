@@ -47,6 +47,8 @@ public class ClingManager {
 
     private Item localItem;
     private RemoteItem remoteItem;
+    //服务是否已经开启
+    private boolean isStartService = false;
 
     /**
      * 私有构造方法
@@ -118,13 +120,16 @@ public class ClingManager {
     }
 
     public void startClingService() {
-        bindService();
+        if (!isStartService) {
+            bindService();
+        }
     }
 
     /**
      * 绑定服务
      */
     private void bindService() {
+        isStartService = true;
         clingServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {

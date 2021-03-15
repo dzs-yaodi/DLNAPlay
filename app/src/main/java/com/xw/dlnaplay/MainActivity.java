@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         button=findViewById(R.id.button);
         frameLayout = findViewById(R.id.frame_dlna_control);
 
-        ClingManager.getInstance().startClingService();
+//        ClingManager.getInstance().startClingService();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
