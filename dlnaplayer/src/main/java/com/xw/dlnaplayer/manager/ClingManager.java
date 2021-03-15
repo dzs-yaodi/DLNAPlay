@@ -48,7 +48,7 @@ public class ClingManager {
     private Item localItem;
     private RemoteItem remoteItem;
     //服务是否已经开启
-    private boolean isStartService = false;
+    public boolean isStartService = false;
 
     /**
      * 私有构造方法

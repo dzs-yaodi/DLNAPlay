@@ -17,6 +17,7 @@ package com.xw.dlnaplayer.service.upnp;
 
 
 import com.xw.dlnaplayer.VConstants;
+import com.xw.dlnaplayer.manager.ClingManager;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -34,7 +35,7 @@ public class JettyResourceServer implements Runnable {
     }
 
     synchronized public void startIfNotRunning() {
-        if (!mServer.isStarted() && !mServer.isStarting()) {
+        if (!mServer.isStarted() && !mServer.isStarting() && !ClingManager.getInstance().isStartService) {
             log.info("Starting JettyResourceServer");
             try {
                 mServer.start();
