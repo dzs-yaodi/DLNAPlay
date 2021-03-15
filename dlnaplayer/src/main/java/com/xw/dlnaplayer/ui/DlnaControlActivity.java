@@ -46,6 +46,7 @@ public class DlnaControlActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         PlayControlle.getInstance().destroy();
+        ClingManager.getInstance().destroy();
         super.onDestroy();
     }
 }

@@ -17,10 +17,12 @@ package com.xw.dlnaplayer.service.upnp;
 
 
 import com.xw.dlnaplayer.VConstants;
+import com.xw.dlnaplayer.event.ErrorEvent;
 import com.xw.dlnaplayer.manager.ClingManager;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.logging.Logger;
 
@@ -42,6 +44,9 @@ public class JettyResourceServer implements Runnable {
             } catch (Exception ex) {
                 log.severe("Couldn't start Jetty server: " + ex);
 //                throw new RuntimeException(ex);
+                ErrorEvent event = new ErrorEvent();
+                event.error = "投屏功能被占用";
+                EventBus.getDefault().post(event);
                 ex.printStackTrace();
             }
         }

@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.xw.dlnaplayer.VIntents;
+import com.xw.dlnaplayer.event.DeviceEvent;
+import com.xw.dlnaplayer.event.ErrorEvent;
 import com.xw.dlnaplayer.manager.ControlManager;
 import com.xw.dlnaplayer.service.upnp.JettyResourceServer;
 
@@ -26,6 +29,9 @@ import org.fourthline.cling.support.lastchange.LastChange;
 import org.fourthline.cling.support.model.DIDLContent;
 import org.fourthline.cling.support.model.TransportState;
 import org.fourthline.cling.support.model.item.Item;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -50,6 +56,7 @@ public class SystemService extends Service {
     public void onCreate() {
         super.onCreate();
         //Start Local Server
+        EventBus.getDefault().register(this);
         mJettyResourceServer = new JettyResourceServer();
         mThreadPool.execute(mJettyResourceServer);
     }
@@ -62,7 +69,7 @@ public class SystemService extends Service {
 
         //Stop Jetty
         mJettyResourceServer.stopIfRunning();
-
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -185,5 +192,10 @@ public class SystemService extends Service {
         @Override
         protected void eventsMissed(GENASubscription subscription, int numberOfMissedEvents) {
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBus(ErrorEvent event) {
+        Toast.makeText(this, event.error, Toast.LENGTH_SHORT).show();
     }
 }
