@@ -41,7 +41,8 @@ public class JettyResourceServer implements Runnable {
                 mServer.start();
             } catch (Exception ex) {
                 log.severe("Couldn't start Jetty server: " + ex);
-                throw new RuntimeException(ex);
+//                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
     }
@@ -53,7 +54,8 @@ public class JettyResourceServer implements Runnable {
                 mServer.stop();
             } catch (Exception ex) {
                 log.severe("Couldn't stop Jetty server: " + ex);
-                throw new RuntimeException(ex);
+//                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
     }
