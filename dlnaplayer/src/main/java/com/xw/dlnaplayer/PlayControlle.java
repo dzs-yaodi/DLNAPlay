@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,11 +36,14 @@ public class PlayControlle{
     private SeekBar seekBar;
     private Context mContext;
     private View parentView;
+    private LinearLayout linearVideoSeek;
 
     private int currProgress = 0;
     private Item localItem;
     private RemoteItem remoteItem;
     private String duration;
+    //是否是直播界面
+    private boolean isLiveShow;
 
     public static PlayControlle getInstance() {
 
@@ -53,16 +57,24 @@ public class PlayControlle{
         return instance;
     }
 
-    public void init(View view, Context context,int mode){
+    public void init(View view, Context context,int mode,boolean liveShow){
 
         this.mContext = context;
         this.parentView = view;
         this.controlMode = mode;
+        this.isLiveShow = liveShow;
         imagePlay = view.findViewById(R.id.image_play);
         imageClose = view.findViewById(R.id.image_close);
         tvCurrentTime = view.findViewById(R.id.current);
         tvTotalTime = view.findViewById(R.id.total);
         seekBar = view.findViewById(R.id.bottom_seek_progress);
+        linearVideoSeek = view.findViewById(R.id.linear_video_seek);
+
+        if (liveShow){
+            linearVideoSeek.setVisibility(View.GONE);
+        } else {
+            linearVideoSeek.setVisibility(View.VISIBLE);
+        }
 
         localItem = ClingManager.getInstance().getLocalItem();
         remoteItem = ClingManager.getInstance().getRemoteItem();
@@ -76,23 +88,26 @@ public class PlayControlle{
                 play();
             }
         });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+        if (!isLiveShow) {
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                }
 
-            }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                currProgress = seekBar.getProgress();
-                tvCurrentTime.setText(VMDate.toTimeString(currProgress));
-                seekCast(currProgress);
-            }
-        });
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    currProgress = seekBar.getProgress();
+                    tvCurrentTime.setText(VMDate.toTimeString(currProgress));
+                    seekCast(currProgress);
+                }
+            });
+        }
     }
 
     /**
@@ -304,7 +319,7 @@ public class PlayControlle{
     }
 
     public void setMediaDuration(String mediaDuration) {
-        if (!TextUtils.isEmpty(mediaDuration)) {
+        if (!TextUtils.isEmpty(mediaDuration) && !isLiveShow) {
             if (!TextUtils.equals(duration,mediaDuration)) {
                 duration = mediaDuration;
                 tvTotalTime.setText(duration);
@@ -315,7 +330,7 @@ public class PlayControlle{
 
 
     public void setTimePosition(String timePosition) {
-        if (!TextUtils.isEmpty(timePosition)) {
+        if (!TextUtils.isEmpty(timePosition)  && !isLiveShow) {
             long progress = VMDate.fromTimeString(timePosition);
             seekBar.setProgress((int) progress);
             tvCurrentTime.setText(timePosition);

@@ -26,6 +26,9 @@ public class SearchDialogActivity extends AppCompatActivity {
     private int position;
     private String videoUrl = "";
     private DeviceSelectAdapter deviceAdapter;
+    public static final String DLNA_LIVE_STATE = "is_live_show";
+    public static final String DLNA_PLAY_URL = "video_url";
+    private boolean isLiveShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class SearchDialogActivity extends AppCompatActivity {
 
         position = getIntent().getIntExtra("index",0);
         videoUrl = getIntent().getStringExtra("video_url");
+        isLiveShow = getIntent().getBooleanExtra(SearchDialogActivity.DLNA_LIVE_STATE,false);
 
         deviceAdapter.setOnItemClickListener(new DeviceSelectAdapter.OnItemClickListener() {
             @Override
@@ -58,7 +62,8 @@ public class SearchDialogActivity extends AppCompatActivity {
                 DeviceManager.getInstance().setCurrClingDevice(device);
 
                 Intent intent = new Intent(SearchDialogActivity.this,DlnaControlActivity.class);
-                intent.putExtra("video_url",videoUrl);
+                intent.putExtra(SearchDialogActivity.DLNA_PLAY_URL,videoUrl);
+                intent.putExtra(SearchDialogActivity.DLNA_LIVE_STATE,isLiveShow);
                 startActivity(intent);
                 finish();
             }
