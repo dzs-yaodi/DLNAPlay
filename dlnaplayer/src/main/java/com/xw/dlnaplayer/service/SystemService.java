@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.xw.dlnaplayer.VIntents;
-import com.xw.dlnaplayer.event.DeviceEvent;
 import com.xw.dlnaplayer.event.ErrorEvent;
 import com.xw.dlnaplayer.manager.ControlManager;
 import com.xw.dlnaplayer.service.upnp.JettyResourceServer;

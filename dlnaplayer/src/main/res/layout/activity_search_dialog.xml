@@ -1,39 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_gravity="center_vertical"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="280dp"
+    <!--标题栏-->
+    <FrameLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical"
-        android:background="@drawable/dlna_search_dialog_bg"
-        >
+        tools:background="#C64238">
 
-        <TextView
+        <!--标题,外部包裹的布局是为了动态设置沉浸式状态，有可能是纯色，有可能是图片-->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="选择要投屏的设备"
-            android:textColor="#ffffff"
-            android:padding="15dp"
-            android:gravity="center"/>
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <View
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:src="@drawable/ic_dlna_back"
+                android:layout_centerVertical="true"
+                />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="投屏"
+                android:textColor="#1C1C1C"
+                android:textSize="21dp"
+                android:layout_centerInParent="true"
+                 />
+
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择要投屏的设备"
+        android:textColor="#6C6E72"
+        android:background="#F7F7F9"
+        android:padding="12dp"
+        android:gravity="start"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#eeeeee"
-            />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:background="#fff"/>
 
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#F7F7F9"
+                />
 
-</FrameLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="如何投视频到电视？"
+                android:textColor="#1c1c1c"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_dlna_tishi"
+                android:layout_marginBottom="-1000dp"
+                />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xw.dlnaplayer.R;
@@ -43,8 +44,10 @@ public class DeviceSelectAdapter extends RecyclerView.Adapter<DeviceSelectAdapte
     public void onBindViewHolder(@NonNull SelectViewHolder holder, final int position) {
         if (clingDevices.size() > 0) {
             if (position == clingDevices.size()){
-                holder.tvContent.setText("加载中...");
+                holder.progressBar.setVisibility(View.VISIBLE);
+                holder.tvContent.setText("正在搜索设备...");
             }else {
+                holder.progressBar.setVisibility(View.GONE);
                 Device device = clingDevices.get(position).getDevice();
                 String name = device.getDetails() != null && device.getDetails().getFriendlyName() != null
                         ? device.getDetails().getFriendlyName() : device.getDisplayString();
@@ -60,7 +63,8 @@ public class DeviceSelectAdapter extends RecyclerView.Adapter<DeviceSelectAdapte
                 });
             }
         }else{
-            holder.tvContent.setText("未发现可用设备...");
+            holder.progressBar.setVisibility(View.VISIBLE);
+            holder.tvContent.setText("正在搜索设备...");
         }
     }
 
@@ -71,9 +75,11 @@ public class DeviceSelectAdapter extends RecyclerView.Adapter<DeviceSelectAdapte
 
     class SelectViewHolder extends RecyclerView.ViewHolder{
         private TextView tvContent;
+        private ProgressBar progressBar;
         public SelectViewHolder(@NonNull View itemView) {
             super(itemView);
             tvContent = itemView.findViewById(R.id.tv_content);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 

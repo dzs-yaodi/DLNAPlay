@@ -9,12 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xw.dlnaplayer.R;
 import com.xw.dlnaplayer.entity.ClingDevice;
 import com.xw.dlnaplayer.event.DeviceEvent;
 import com.xw.dlnaplayer.manager.ClingManager;
 import com.xw.dlnaplayer.manager.DeviceManager;
+import com.xw.dlnaplayer.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,10 +42,19 @@ public class SearchDialogActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        Utils.initTitleBar(this, findViewById(R.id.title_container));
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         ClingManager.getInstance().startClingService();
         EventBus.getDefault().register(this);
         mRecycler = findViewById(R.id.recycler);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mRecycler.setNestedScrollingEnabled(false);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         itemDecoration.setDrawable(new ColorDrawable(Color.parseColor("#eeeeee")));
         mRecycler.addItemDecoration(itemDecoration);
